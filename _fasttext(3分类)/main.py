@@ -23,24 +23,24 @@ test_file = "villa/jdComment.test"
 """ get train set for fasttext based on train_set and save it in train_file """
 """ get valid set for fasttext based on valid_set and save it in valid_file """
 """ get test set for fasttext based on test_set and save it in test_file """
-# cut.cutDataSet(data_set, data_set_norm, train_set, valid_set, test_set, 11000, 14000)
-# trans.trans_for_fasttext(train_set, train_file, "content", "tag")
-# trans.trans_for_fasttext(valid_set, valid_file, "content", "tag")
-# trans.trans_for_fasttext(test_set, test_file, "content", "tag")
-# trans.segSentence(train_file)
-# trans.segSentence(valid_file)
-# trans.segSentence(test_file)
-# wordcnt = trans.reduce(3, train_file, valid_file, test_file)
-# trans.overSampling(train_file, "1", "2", "3")
-# trans.overSampling(valid_file, "1", "2", "3")
-# trans.overSampling(test_file, "1", "2", "3")
+cut.cutDataSet(data_set, data_set_norm, train_set, valid_set, test_set, 11000, 14000)
+trans.trans_for_fasttext(train_set, train_file, "content", "tag")
+trans.trans_for_fasttext(valid_set, valid_file, "content", "tag")
+trans.trans_for_fasttext(test_set, test_file, "content", "tag")
+trans.segSentence(train_file)
+trans.segSentence(valid_file)
+trans.segSentence(test_file)
+wordcnt = trans.reduce(3, train_file, valid_file, test_file)
+trans.overSampling(train_file, "1", "2", "3")
+trans.overSampling(valid_file, "1", "2", "3")
+trans.overSampling(test_file, "1", "2", "3")
 
 """ get and save the training model """
-# model = anal.train(train_file, valid_file)
-# model.save_model("villa/model_jdComment.bin")
+model = anal.train(train_file, valid_file)
+model.save_model("villa/model_jdComment.bin")
 
 """ test the training model """
-model = fasttext.load_model("villa/model_jdComment.bin")
+# model = fasttext.load_model("villa/model_jdComment.bin")
 print(model.test(test_file))
 
 # print(anal.predictComment(model, wordcnt, 3, "没有达到期望值"))
