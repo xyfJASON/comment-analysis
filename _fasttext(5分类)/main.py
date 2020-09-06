@@ -36,11 +36,11 @@ trans.overSampling(valid_file, "-1", "0", "1", "2", "3")
 trans.overSampling(test_file, "-1", "0", "1", "2", "3")
 
 """ get and save the training model """
-model = anal.train(train_file, valid_file)
-model.save_model("villa/model_jdComment.bin")
+# model = anal.train(train_file, valid_file)
+# model.save_model("villa/model_jdComment.bin")
 
 """ test the training model """
-# model = fasttext.load_model("villa/model_jdComment.bin")
+model = fasttext.load_model("villa/model_jdComment.bin")
 print(model.test(test_file))
 
 # print(anal.predictComment(model, wordcnt, 3, "没有达到期望值"))

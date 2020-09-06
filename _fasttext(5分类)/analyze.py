@@ -11,7 +11,8 @@ def train(train_file_name, valid_file_name):
 		# lr = 0.1, epoch = 25, wordNgrams = 2, bucket = 200000, dim = 50, loss = 'hs')
 	return fasttext.train_supervised(input = train_file_name, \
 		autotuneValidationFile = valid_file_name, \
-		autotuneDuration = 300)
+		autotuneDuration = 1200, \
+		autotuneModelSize = "100M")
 
 def predictComment(model, wordcnt, limit, comment):
 	"""
