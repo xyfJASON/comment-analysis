@@ -39,3 +39,10 @@
 [14] 解决样本不平衡问题的奇技淫巧 汇总: https://blog.csdn.net/songhk0209/article/details/71484469
 
 [15] 知乎回答.欠采样（undersampling）和过采样（oversampling）会对模型带来怎样的影响？: https://www.zhihu.com/question/269698662/answer/352279936
+
+[16] Python 使用 NLTK 实现简单情感分析--Twitter（推特）分析: https://www.cnblogs.com/yidada/p/11868870.html
+
+[17] nltk 数据下载: https://github.com/nltk/nltk_data
+
+[18] NLTK最详细功能介绍: https://www.cnblogs.com/chen8023miss/p/11458571.html
+
