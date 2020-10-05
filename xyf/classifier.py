@@ -1,4 +1,4 @@
-import csv
+import json
 import jieba
 import pickle
 import fasttext
@@ -17,16 +17,12 @@ models["FastText"] = ["models/model_FastText.bin", 0.7226, None]
 def get_stopwords_list():
 	""" 获取停用词表，返回包含停用词的列表 """
 	stopwords = [line.strip() for line in open("my_stopwords.txt")]
-	stopwords.append("hellip")
 	stopwords.append(" ")
-	stopwords.append("\n")
 	return stopwords
 
 def classify(comment):
-	stopwords_list = get_stopwords_list()
 	wordlist = [i for i in jieba.lcut(comment) if i.strip() and i not in stopwords_list]
-	cnt = {}
-	cnt["-1"] = cnt["0"] = cnt["1"] = cnt["2"] = cnt["3"] = 0
+	cnt = {'-1':0, '0':0, '1':0, '2':0, '3':0}
 	for key, val in models.items():
 		if key == "FastText":
 			res = val[2].predict(" ".join(wordlist))[0][0][9:]
@@ -39,6 +35,7 @@ def classify(comment):
 	return sorted(cnt.items(), key = lambda x:x[1], reverse = True)[0][0]
 
 
+stopwords_list = get_stopwords_list()
 for key, val in models.items():
 	if key == "FastText":
 		val[2] = fasttext.load_model(val[0])
@@ -46,13 +43,16 @@ for key, val in models.items():
 		with open(val[0], "rb") as infile:
 			val[2] = pickle.load(infile)
 
-with open("jdComment_TestSet.csv", newline = "") as infile:
-	reader = csv.DictReader(infile)
-	tot = 0
-	bingo = 0
-	for row in reader:
-		tot += 1
-		if tot % 100 == 0:
-			print(tot)
-		bingo += (classify(row["content"]) == str(row["tag"]))
-	print(bingo, tot, bingo / tot)
+cnt = {'-1':0, '0':0, '1':0, '2':0, '3':0}
+with open("mycomment.json", "r", encoding = "utf-8") as infile:
+	for line in infile:
+		data = json.loads(line)
+		cnt[classify(data["content"])] += 1
+
+with open("result.txt", "a", encoding = "utf-8") as outfile:
+	outfile.write(str(cnt['-1']) + '\n')
+	outfile.write(str(cnt['0']) + '\n')
+	outfile.write(str(cnt['1']) + '\n')
+	outfile.write(str(cnt['2']) + '\n')
+	outfile.write(str(cnt['3']) + '\n')
+	outfile.write(str((cnt['3']*3+cnt['2']*2+cnt['1'])/(cnt['3']+cnt['2']+cnt['1'])) + '\n')
