@@ -16,7 +16,7 @@ models["FastText"] = ["models/model_FastText.bin", 0.7226, None]
 
 def get_stopwords_list():
 	""" 获取停用词表，返回包含停用词的列表 """
-	stopwords = [line.strip() for line in open("my_stopwords.txt")]
+	stopwords = [line.strip() for line in open("my_stopwords.txt", "r", encoding = "utf-8")]
 	stopwords.append(" ")
 	return stopwords
 
@@ -49,7 +49,8 @@ with open("mycomment.json", "r", encoding = "utf-8") as infile:
 		data = json.loads(line)
 		cnt[classify(data["content"])] += 1
 
-with open("result.txt", "a", encoding = "utf-8") as outfile:
+with open("result.txt", "w", encoding = "utf-8") as outfile:
+	outfile.write(str(cnt['-1']+cnt['0']+cnt['3']+cnt['2']+cnt['1']) + '\n')
 	outfile.write(str(cnt['-1']) + '\n')
 	outfile.write(str(cnt['0']) + '\n')
 	outfile.write(str(cnt['1']) + '\n')
