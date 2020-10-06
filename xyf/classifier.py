@@ -2,6 +2,7 @@ import json
 import jieba
 import pickle
 import fasttext
+from math import floor
 
 models = {}
 # models["NaiveBayes"] = ("models/model_NaiveBayes.pickle", 0.5400, None)
@@ -47,13 +48,24 @@ cnt = {'-1':0, '0':0, '1':0, '2':0, '3':0}
 with open("mycomment.json", "r", encoding = "utf-8") as infile:
 	for line in infile:
 		data = json.loads(line)
+		print(data["content"])
 		cnt[classify(data["content"])] += 1
 
-with open("result.txt", "w", encoding = "utf-8") as outfile:
-	outfile.write(str(cnt['-1']+cnt['0']+cnt['3']+cnt['2']+cnt['1']) + '\n')
-	outfile.write(str(cnt['-1']) + '\n')
-	outfile.write(str(cnt['0']) + '\n')
-	outfile.write(str(cnt['1']) + '\n')
-	outfile.write(str(cnt['2']) + '\n')
-	outfile.write(str(cnt['3']) + '\n')
-	outfile.write(str((cnt['3']*3+cnt['2']*2+cnt['1'])/(cnt['3']+cnt['2']+cnt['1'])) + '\n')
+with open("Result.txt", "w", encoding = "utf-8") as outfile:
+	sum = cnt['-1']+cnt['0']+cnt['3']+cnt['2']+cnt['1']
+	per = {'-1':0, '0':0, '1':0, '2':0, '3':0}
+	per['-1'] = floor(cnt['-1'] / sum * 100);
+	per['0'] = floor(cnt['0'] / sum * 100);
+	per['1'] = floor(cnt['1'] / sum * 100);
+	per['2'] = floor(cnt['2'] / sum * 100);
+	per['3'] = 100 - per['-1'] - per['0'] - per['1'] - per['2'];
+	score = floor((cnt['3']*3+cnt['2']*2+cnt['1'])/(cnt['3']+cnt['2']+cnt['1'])*33+1)
+	outfile.write(str(per['3']) + " " + str(per['2'])\
+	 + " " + str(per['1']) + " " + str(per['-1']) + " " + str(per['0']) + " ")
+	outfile.write(str(score) + " ")
+	if score >= 83:
+		outfile.write("1 ")
+	elif score >= 67:
+		outfile.write("2 ")
+	else:
+		outfile.write("3 ")
